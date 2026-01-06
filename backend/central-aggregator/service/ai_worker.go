@@ -7,7 +7,7 @@ import (
 )
 
 func TriggerAggregation(targetDir string) error {
-	cmd := exec.Command("python3", "aggregate.py", targetDir)
+	cmd := exec.Command("python3", "aggregate_test.py", targetDir)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
