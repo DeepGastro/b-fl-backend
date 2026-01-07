@@ -6,8 +6,9 @@ import (
 	"os/exec"
 )
 
+// 여기서 python3 인지 python 인지 운영체제에 따라 잘 결정해야할듯?
 func TriggerAggregation(targetDir string) error {
-	cmd := exec.Command("python3", "aggregate_test.py", targetDir)
+	cmd := exec.Command("python", "aggregate_test.py", targetDir)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
