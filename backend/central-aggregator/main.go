@@ -21,7 +21,7 @@ func main() {
 
 	// --- CORS 설정 시작 ---
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // 프론트엔드 주소 허용
+		AllowOrigins:     []string{"*"}, // 프론트엔드 주소 허용
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
