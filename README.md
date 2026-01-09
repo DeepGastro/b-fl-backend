@@ -264,7 +264,7 @@ if len(files) >= 3 {
         service.TriggerAggregation(uploadPath)
     }()
 }
-// Python3 aggregate.py {targetDir} 실행
+// Python3 aggregate_test.py {targetDir} 실행
 ```
 
 ### Hospital Node 핵심 로직

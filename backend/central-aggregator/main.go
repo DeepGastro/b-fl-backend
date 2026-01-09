@@ -5,16 +5,30 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
+	"central-aggregator/handlers"
 	"central-aggregator/service"
 	"central-aggregator/utils"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// gin engine instance 생성
 	r := gin.Default()
+
+	// --- CORS 설정 시작 ---
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"}, // 프론트엔드 주소 허용
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+	// --- CORS 설정 끝 ---
 
 	// 가중치와 블록체인에 보낼 내용 받고, 형식 만들기
 	r.POST("/submit", func(c *gin.Context) {
@@ -75,6 +89,8 @@ func main() {
 			"hospital_id": hospitalID,
 		})
 	})
+
+	r.GET("/status", handlers.GetStatus)
 
 	// 3. 서버 실행
 	r.Run(":8080")
