@@ -66,8 +66,9 @@ func main() {
 		// ai 프로그램 실행(3번 호출당 한번씩 가중치 합산)
 		files, _ := os.ReadDir(uploadPath)
 		if len(files) >= 3 {
+			outputPath := filepath.Join("storage", "round_"+roundID, "aggregated_model.pth")
 			go func() {
-				if err := service.TriggerAggregation(uploadPath); err != nil {
+				if err := service.TriggerAggregation(uploadPath, outputPath); err != nil {
 					fmt.Println("AI 가중치 합산 오류", err)
 				}
 			}()
@@ -93,12 +94,12 @@ func main() {
 	r.GET("/status", handlers.GetStatus)
 
 	r.GET("/download/:round_id", func(c *gin.Context) {
-		rountID := c.Param("round_id")
+		roundID := c.Param("round_id")
 
 		//TODO 여기서 ai가 어떤 파일 이름으로 만들건지?
-		filepath := filepath.Join("storage", "round_"+rountID+".pth")
+		filePath := filepath.Join("storage", "round_"+roundID, "aggregated_model.pth")
 
-		if _, err := os.Stat(filepath); os.IsNotExist(err) {
+		if _, err := os.Stat(filePath); os.IsNotExist(err) {
 			c.JSON(http.StatusNotFound, gin.H{
 				"status":  "processing",
 				"message": "아직 합상 중이거나 해당 라운드 파일이 없습니다.",
@@ -106,7 +107,7 @@ func main() {
 			return
 		}
 
-		c.File(filepath)
+		c.File(filePath)
 	})
 
 	// 3. 서버 실행
