@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Go 실행 파일 복사
 COPY --from=builder /app/main .
-COPY aggregate.py .
+COPY run_server.py.py .
 COPY requirements.txt .
 
 # 🛠️ PyTorch CPU 버전 및 필수 라이브러리 설치

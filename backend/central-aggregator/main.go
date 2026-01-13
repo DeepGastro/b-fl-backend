@@ -92,6 +92,23 @@ func main() {
 
 	r.GET("/status", handlers.GetStatus)
 
+	r.GET("/download/:round_id", func(c *gin.Context) {
+		rountID := c.Param("round_id")
+
+		//TODO 여기서 ai가 어떤 파일 이름으로 만들건지?
+		filepath := filepath.Join("storage", "round_"+rountID+".pth")
+
+		if _, err := os.Stat(filepath); os.IsNotExist(err) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"status":  "processing",
+				"message": "아직 합상 중이거나 해당 라운드 파일이 없습니다.",
+			})
+			return
+		}
+
+		c.File(filepath)
+	})
+
 	// 3. 서버 실행
 	r.Run(":8080")
 }
